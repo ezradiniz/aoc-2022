@@ -1,16 +1,3 @@
-local function read_lines(filename, callback)
-	local file = io.open(filename, "r")
-	if not file then
-		error("error: could not read the file: " .. filename)
-	end
-	local index = 1
-	for line in file:lines() do
-		callback(line, index)
-		index = index + 1
-	end
-	file:close()
-end
-
 local function to_priority(item)
 	if string.upper(item) == item then
 		return string.byte(item) - string.byte("A") + 27
@@ -46,12 +33,12 @@ local function solve1()
 	end
 
 	local sum = 0
-	read_lines(input, function(items)
+	for items in io.lines(input) do
 		local half = #items / 2
 		local part1 = items:sub(1, half)
 		local part2 = items:sub(half + 1, #items)
 		sum = sum + calc_priority(part1, part2)
-	end)
+	end
 
 	print("part 1:", sum)
 end
@@ -96,13 +83,15 @@ local function solve2()
 	end
 
 	local sum = 0
-	read_lines(input, function(items, index)
+	local index = 1
+	for items in io.lines(input) do
 		add_to_group(items)
 		if index % 3 == 0 then
 			sum = sum + get_group_priority()
 			reset_group()
 		end
-	end)
+		index = index + 1
+	end
 
 	print("part 2:", sum)
 end

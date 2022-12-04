@@ -1,14 +1,3 @@
-local function read_lines(filename, callback)
-	local file = io.open(filename, "r")
-	if not file then
-		error("error: could not read the file: " .. filename)
-	end
-	for line in file:lines() do
-		callback(line)
-	end
-	file:close()
-end
-
 local function calc_score(opp, you)
 	local score_table = {}
 
@@ -34,11 +23,11 @@ local function solve1()
 	local input = "./input.txt"
 
 	local score = 0
-	read_lines(input, function(line)
+	for line in io.lines(input) do
 		local opp = line:sub(1, 1)
 		local you = line:sub(3, 3)
 		score = score + calc_score(opp, you)
-	end)
+	end
 
 	print("part 1:", score)
 end
@@ -68,11 +57,11 @@ local function solve2()
 	end
 
 	local score = 0
-	read_lines(input, function(line)
+	for line in io.lines(input) do
 		local opp = line:sub(1, 1)
 		local you = line:sub(3, 3)
 		score = score + calc_score(opp, follow_strategy(opp, you))
-	end)
+	end
 
 	print("part 2:", score)
 end
